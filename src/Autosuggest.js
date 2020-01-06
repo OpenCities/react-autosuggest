@@ -278,6 +278,7 @@ export default class Autosuggest extends Component {
 
   onDocumentMouseDown = event => {
     this.justClickedOnSuggestionsContainer = false;
+    this.justClickedOnDocument = true;
 
     let node =
       (event.detail && event.detail.target) || // This is for testing only. Please show me a better way to emulate this.
@@ -561,9 +562,15 @@ export default class Autosuggest extends Component {
           return;
         }
 
+        if (!this.justClickedOnDocument) {
+          return;
+        }
+
+        this.justClickedOnDocument = false;
+
         this.blurEvent = event;
 
-        if (!this.justSelectedSuggestion && (!this.props.shouldClose || this.props.shouldClose())) {
+        if (!this.justSelectedSuggestion) {
           this.onBlur();
           this.onSuggestionsClearRequested();
         }
